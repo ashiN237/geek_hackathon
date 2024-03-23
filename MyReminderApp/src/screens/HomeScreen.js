@@ -14,6 +14,8 @@ import { AntDesign, Octicons } from "@expo/vector-icons";
 
 import * as Notifications from "expo-notifications";
 
+import { getAuth, signOut } from "firebase/auth";
+
 import {
   loadNonCompletionTasks,
   deleteSelectedTask,
@@ -31,6 +33,7 @@ import TaskListItem from "../styles/taskListItem";
 function HomeScreen({ navigation, route }) {
   const [tasks, setTasks] = useState([]);
   const { userId } = useUser();
+  const auth = getAuth();
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -48,13 +51,18 @@ function HomeScreen({ navigation, route }) {
       headerRight: () => (
         <Button
           onPress={() => {
-            // ログアウト処理をここに書く
-            Alert.alert("Logout", "You have been logged out.", [
-              { text: "OK", onPress: () => navigation.navigate("Title") }, // 'LoginScreen'は適宜変更してください
-            ]);
+            signOut(auth).then(() => {
+              // ログアウト成功
+              Alert.alert("Logout", "You have been logged out.", [
+                { text: "OK", onPress: () => navigation.navigate("Title") },
+              ]);
+            }).catch((error) => {
+              // ログアウト失敗、エラー処理
+              Alert.alert("Logout Error", error.message);
+            });
           }}
           title="Logout"
-          color="#FFF" // ログアウトボタンの文字色を白に設定する
+          color="#FFF"
         />
       ),
     });
