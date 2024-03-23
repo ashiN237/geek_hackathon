@@ -1,12 +1,13 @@
 import React from 'react';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import { UserProvider } from './src/utils/UserContext'; 
 import AppNavigation from './src/navigation/AppNavigation';
 import { initializeApp } from 'firebase/app';
 
-// Googleサインインの設定
 GoogleSignin.configure({
-  webClientId: '748710972974-pqkqe1ra5j9vu6cb5nse7m438uj337an.apps.googleusercontent.com', // 実際のWebクライアントIDに置き換えてください
+  webClientId: '748710972974-pqkqe1ra5j9vu6cb5nse7m438uj337an.apps.googleusercontent.com',
 });
 
 const firebaseConfig = {
@@ -20,6 +21,10 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
+const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+});
 
 export default function App() {
   return (
