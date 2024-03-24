@@ -25,32 +25,34 @@ function CompleteTaskList({ navigation, route }) {
   const [tasks, setTasks] = useState([]);
   const { userId } = useUser();
 
+
   useEffect(() => {
-    navigation.addListener("focus", () => {
+    const unsubscribe = navigation.addListener("focus", () => {
       loadTasks();
       requestPermissionsAsync();
     });
-  }, []);
 
-  navigation.setOptions({
-    headerTitle: "Completed Tasks",
-    headerTitleStyle: {
-      fontSize: 24,
-    },
-    headerLeft: null,
+    navigation.setOptions({
+      headerTitle: "Completed Tasks",
+      headerTitleStyle: {
+        fontSize: 24,
+      },
+      headerLeft: null,
+      headerRight: () => (
+        <Button
+          onPress={() => {
+            Alert.alert("Logout", "You have been logged out.", [
+              { text: "OK", onPress: () => navigation.navigate("Title") },
+            ]);
+          }}
+          title="Logout"
+          color="#FFF"
+        />
+      ),
+    });
 
-    headerRight: () => (
-      <Button
-        onPress={() => {
-          Alert.alert("Logout", "You have been logged out.", [
-            { text: "OK", onPress: () => navigation.navigate("Title") }, 
-          ]);
-        }}
-        title="Logout"
-        color="#FFF" 
-      />
-    ),
-  });
+    return unsubscribe;
+  }, [navigation]);
 
   const loadTasks = async () => {
     loadCompletedTasks(userId)

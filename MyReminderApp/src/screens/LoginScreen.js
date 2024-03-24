@@ -3,10 +3,11 @@ import { View, Button, StyleSheet, Alert } from 'react-native';
 import { useUser } from '../utils/UserContext';
 import { getAuth, signInWithCredential, GoogleAuthProvider } from "firebase/auth";
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { WEB_CLIENT_ID } from '@env';
 
 // Google Sign-Inを設定
 GoogleSignin.configure({
-  webClientId: '748710972974-pqkqe1ra5j9vu6cb5nse7m438uj337an.apps.googleusercontent.com',
+  webClientId: WEB_CLIENT_ID,
 });
 
 function LoginScreen({ navigation }) {
