@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Alert,
   StyleSheet,
@@ -39,13 +39,15 @@ const TaskDetailScreen = ({ navigation }) => {
     setSelectedDays(updatedDays);
   };
 
-  navigation.setOptions({
-    headerTitle: 'Add Task', 
-    headerTitleStyle: {
-      fontSize: 24,
-    },
-    headerLeft: null, 
-  });
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: 'Add Task', 
+      headerTitleStyle: {
+        fontSize: 24,
+      },
+      headerLeft: null,
+    });
+  }, [navigation]);
 
   const handleSaveTask = async () => {
     if (!taskName) {
